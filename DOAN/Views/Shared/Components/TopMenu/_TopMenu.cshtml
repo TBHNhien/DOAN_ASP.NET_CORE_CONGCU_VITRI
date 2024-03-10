@@ -1,0 +1,11 @@
+﻿@model List<DOAN.Models.Menu>
+
+<div class="menu1" id="menu_phu">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li><a href="@item.Link" target="@item.Target">@item.Text</a></li>
+        }
+
+    </ul>
+</div>

@@ -1,4 +1,4 @@
-using DOAN.Data;
+﻿using DOAN.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +10,15 @@ namespace DOAN
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+            // Thêm services cho session vào container
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Ví dụ cài đặt timeout là 30 phút
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -35,16 +44,32 @@ namespace DOAN
             }
 
             app.UseHttpsRedirection();
+
+            // Đặt app.UseSession() trước app.UseStaticFiles() và app.UseRouting()
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                // Định nghĩa các route
+                endpoints.MapControllerRoute(
+                    name: "Product Detail",
+                    pattern: "chi-tiet/{MetaTitle}/{id}",
+                    defaults: new { controller = "Product", action = "Detail" }
+                );
+
+                // Cấu hình route mặc định (nếu có)
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+            });
 
             app.Run();
         }

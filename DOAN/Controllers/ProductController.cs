@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Model.Dao;
 
 namespace DOAN.Controllers
 {
@@ -7,6 +8,14 @@ namespace DOAN.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Detail(long id)
+        {
+            var product = new ProductDao().ViewDetail(id);
+            ViewBag.Category = new ProductCategoryDao().ViewDetail(product.CategoryId.Value);
+            ViewBag.RelatedProducts = new ProductDao().ListRelatedProduct(id);
+            return View(product);
         }
     }
 }

@@ -1,0 +1,112 @@
+﻿@* @model PagedList.IPagedList<DOAN.Models.User> *@
+    @model X.PagedList.IPagedList<DOAN.Models.User>
+
+
+@* @using PagedList.Mvc; *@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+
+@{
+    ViewBag.Title = "Quản lý người dùng ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Danh sách người dùng
+}
+
+@section jsFooter{
+    <script src="/assets/admin/js/controller/userController.js"></script>
+    }
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng </h6>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "User", FormMethod.Get))
+            {
+                <div class="row form-group">
+                    <div class="col-lg-12">
+                        <div class="col-md-4">
+                            <input type="text" value="@ViewBag.SearchString" class="form-control" name="searchString" />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                            <a  class="btn btn-primary" href="/Admin/User/Create">Thêm mới</a>
+
+                            @*Nút submit sẽ đẩy "searchString" vào trong tham số "Index"*@
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Tài khoản</th>
+                            <th>Tên</th>
+                            <th>Trạng Thái</th>
+                            <th>#</th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Email</th>
+                            <th>Tài khoản</th>
+                            <th>Tên</th>
+                            <th>Trạng Thái</th>
+                            <th>#</th>
+
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.Id">
+                                <td>@item.UserName</td>
+                                <td>@item.Name</td>
+                                <td>@item.Email</td>
+                                <td>
+                                    <a href="#" class="btn-active" data-id="@item.Id">@item.Status?"Kích hoạt":"Khóa"</a>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn-edit" data-id="@item.Id">Edit</a>
+                                    <a href="#" class="btn-delete" data-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page ,@searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function () {
+            var id = $(this).data('id'); // lấy ID của người dùng
+            if (confirm('Are you sure you want to delete this?')) { // xác nhận trước khi xóa
+                $.ajax({
+                    url: '/Admin/User/Delete/' + id, // URL tới action Delete
+                    type: 'DELETE', // phương thức HTTP
+                    success: function (result) {
+                        $('#row_' + id).remove(); // xóa hàng nếu thành công
+                    },
+                    error: function (err) {
+                        alert('Error: ' + err.statusText); // thông báo nếu có lỗi
+                    }
+                });
+            }
+        });
+    });
+</script>

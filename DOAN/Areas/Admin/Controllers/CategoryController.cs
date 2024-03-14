@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DOAN.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         // GET: Admin/Category
+        [Area("Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Area("Admin")]
         public IActionResult Create()
         {
             return View();

@@ -11,22 +11,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DOAN.Areas.Admin.Controllers
 {
-    public class ContentController : Controller
+    public class ContentController : BaseController
     {
         // GET: Admin/Content
+        [Area("Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [Area("Admin")]
         public IActionResult Create()
         {
             SetViewBag();
-            return View();
+            var model = new Content(); // Thay `YourModel` bằng tên class model của bạn
+            return View(model);
         }
 
         [HttpGet]
+        [Area("Admin")]
         public IActionResult Edit(long id)
         {
             var dao = new ContentDao();
@@ -36,6 +40,7 @@ namespace DOAN.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Area("Admin")]
         public IActionResult Edit(Content model)
         {
             if (ModelState.IsValid)
@@ -48,6 +53,7 @@ namespace DOAN.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [Area("Admin")]
         //[ValidateInput(false)]
         public IActionResult Create(Content model)
         {
@@ -60,9 +66,10 @@ namespace DOAN.Areas.Admin.Controllers
         }
 
         public void SetViewBag(long? selectedId = null)
+        
         {
             var dao = new CategoryDao();
-            ViewBag.CategoryID = new SelectList(dao.ListAll(), "ID", "Name", selectedId);
+            ViewBag.CategoryId = new SelectList(dao.ListAll(), "Id", "Name", selectedId);
         }
     }
 }

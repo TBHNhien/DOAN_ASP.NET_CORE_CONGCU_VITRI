@@ -14,10 +14,12 @@ namespace DOAN.Controllers
     public class LoginController : Controller
     {
         // GET: Admin/Login
+        [Area("Admin")]
         public IActionResult Index()
         {
             return View();
         }
+        [Area("Admin")]
         public IActionResult Login(LoginModel model)
         {
             if (ModelState.IsValid)
@@ -36,7 +38,7 @@ namespace DOAN.Controllers
                     HttpContext.Session.SetString(CommonConstants.USER_SESSION, JsonConvert.SerializeObject(userSession));
                  
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "HomeAdmin");
                 }
                 else if (result == 0)
                 {

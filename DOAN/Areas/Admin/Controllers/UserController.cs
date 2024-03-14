@@ -11,14 +11,15 @@ using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 using DOAN.Models;
 
-namespace OnlineShop_10.Areas.Admin.Controllers
+namespace DOAN.Areas.Admin.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
 
         public int page = 1;
         public int pageSize = 1;
         // GET: Admin/User
+        [Area("Admin")]
         public IActionResult Index(string searchString,int page = 1 , int pageSize = 10)
         {
             var dao = new UserDao();
@@ -28,13 +29,13 @@ namespace OnlineShop_10.Areas.Admin.Controllers
             ViewBag.SearchString = searchString;
             return View(model);
         }
-
+        [Area("Admin")]
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
-
+        [Area("Admin")]
         [HttpPost]
         public IActionResult Create(User user)
         {
@@ -60,6 +61,7 @@ namespace OnlineShop_10.Areas.Admin.Controllers
         }
 
         public static string oldPass;
+        [Area("Admin")]
         public IActionResult Edit(int id)
         {
             var user = new UserDao().ViewDetail(id);
@@ -76,6 +78,7 @@ namespace OnlineShop_10.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Area("Admin")]
         public IActionResult Edit(User user)
         {
             if (ModelState.IsValid)
@@ -117,6 +120,7 @@ namespace OnlineShop_10.Areas.Admin.Controllers
         }
 
         [HttpDelete]
+        [Area("Admin")]
         public IActionResult Delete(int id)
         {
             new UserDao().Delete(id);
@@ -125,6 +129,7 @@ namespace OnlineShop_10.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Area("Admin")]
         public JsonResult ChangeStatus(long id)
         {
             var result = new UserDao().ChangeStatus(id);

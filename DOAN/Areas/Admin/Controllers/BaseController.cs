@@ -23,6 +23,7 @@ namespace DOAN.Areas.Admin.Controllers
         //    base.OnActionExecuting(filterContext);
         //}
 
+        [Area("Admin")]
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);

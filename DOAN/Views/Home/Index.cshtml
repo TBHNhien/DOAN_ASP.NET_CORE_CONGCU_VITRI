@@ -9,6 +9,16 @@
 @section slide {
     <li>Cửa hàng</li>
 }
+<button id="adminHomeButton" type="button">Admin Home</button>
+
+<script>
+    document.getElementById('adminHomeButton').addEventListener('click', function () {
+        window.location.href = '@Url.Action("Index", "HomeAdmin", new { Area = "Admin" })';
+    });
+
+</script>
+
+
 
 <!-- top Products -->
 <div class="ads-grid_shop">

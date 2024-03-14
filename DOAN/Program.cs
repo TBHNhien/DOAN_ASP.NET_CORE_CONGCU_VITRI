@@ -55,8 +55,15 @@ namespace DOAN
 
 
 
+            app.MapAreaControllerRoute(
+            name: "AdminArea",
+            areaName: "Admin",
+            pattern: "Admin/{controller=HomeAdmin}/{action=Index}/{id?}");
+
             app.UseEndpoints(endpoints =>
             {
+
+
                 // Định nghĩa các route
                 endpoints.MapControllerRoute(
                     name: "Product Detail",
